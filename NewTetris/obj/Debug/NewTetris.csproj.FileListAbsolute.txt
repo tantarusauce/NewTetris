@@ -1,0 +1,8 @@
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\bin\Debug\NewTetris.exe.config
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\bin\Debug\NewTetris.exe
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\bin\Debug\NewTetris.pdb
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\obj\Debug\NewTetris.csproj.AssemblyReference.cache
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\obj\Debug\NewTetris.csproj.SuggestedBindingRedirects.cache
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\obj\Debug\NewTetris.csproj.CoreCompileInputs.cache
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\obj\Debug\NewTetris.exe
+C:\Users\kyuur\OneDrive\ドキュメント\GitHub\NewTetris\NewTetris\obj\Debug\NewTetris.pdb
