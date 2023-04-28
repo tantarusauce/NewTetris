@@ -8,7 +8,7 @@ namespace Main
 {
     class Window : Form
     {
-        private bool constr = false;
+        private bool constr = true;
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         public static void Main()
         {
@@ -37,10 +37,10 @@ namespace Main
         }
         public void timer_Tick(Object sender, EventArgs e)
         {
-            if (!constr)
+            if (constr)
             {
                 this.Visible = false;
-                constr = true;
+                constr = false;
             }
             Invalidate();
         }
