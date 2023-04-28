@@ -37,14 +37,21 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MinoClass.cs" />
+    <Compile Include="GameValueClass.cs" />
+    <Compile Include="GameClass.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TitleClass.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.cs">
+    <Compile Include="Game.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

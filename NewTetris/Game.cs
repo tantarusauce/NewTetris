@@ -6,7 +6,7 @@ using static System.Windows.Forms.DataFormats;
 
 namespace Main
 {
-    class Window : Form
+    public class Window : Form
     {
         private bool constr = true;
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -14,7 +14,7 @@ namespace Main
         {
             Application.Run(new Window());
         }
-        Window()
+        public Window()
         {
             this.Text = "Tetris";
             this.ClientSize = new Size(1280, 720);
@@ -25,10 +25,9 @@ namespace Main
             TitleClass.Title tit = new TitleClass.Title();
             this.Paint += new PaintEventHandler(form_Paint);
             timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = 15;
+            timer.Interval = 30;
             timer.Start();
             tit.timer_Start();
-
             tit.Show();
         }
         public void form_Paint(Object sender, PaintEventArgs e)
