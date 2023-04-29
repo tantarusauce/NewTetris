@@ -10,7 +10,7 @@ namespace TetrisGame
     {
         private Image[] img = new Image[14];
         private Image[,] bg = new Image[17, 24];
-        private Image backg, holdImg, scoreSheet, bcgr, minom1img;
+        private Image backg, holdImg, scoreSheet, bcgr, minom1img, restart, restart_Gray, exit, exit_Gray;
         private Mino m;
         private Game gam;
         private Label scoreLabel;
@@ -52,6 +52,10 @@ namespace TetrisGame
             backg = Image.FromFile(".\\resources\\background.png");
             bcgr = Image.FromFile(".\\resources\\background0.png");
             holdImg = Image.FromFile(".\\resources\\hold.png");
+            restart = Image.FromFile(".\\resources\\Restart.png");
+            restart_Gray = Image.FromFile(".\\resources\\Restart_gray.png");
+            exit = Image.FromFile(".\\resources\\EXIT.png");
+            exit_Gray = Image.FromFile(".\\resources\\EXIT_gray.png");
             for (int i = 0; i <= 13; i++)
             {
                 img[i] = Image.FromFile(".\\resources\\mino_" + i + ".png");
