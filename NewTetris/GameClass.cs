@@ -17,7 +17,7 @@ namespace TetrisGame
         private Label retryLabel;
         private Label exitLabel;
         Random rn = new Random();
-        private int scene = 2;//1:None 2:gameinit 3:game 
+        private int scene = 3;//1:None 2:gameinit 3:game 
         private int timer = 0;
         private int rc = 0;
         private int rct = 0;
@@ -33,6 +33,7 @@ namespace TetrisGame
         public Tetris()
         {
             loadImage();
+            init();
             this.Text = "faketetris";
             this.ClientSize = new Size(1280, 720);
             this.DoubleBuffered = true;
@@ -42,7 +43,6 @@ namespace TetrisGame
             this.Paint += new PaintEventHandler(fm_Paint);
             this.KeyDown += new KeyEventHandler(fm_KeyDown);
             tm.Tick += new EventHandler(tm_Tick);
-            tm.Start();
         }
 
         public void loadImage()
@@ -64,18 +64,38 @@ namespace TetrisGame
         public void fm_Paint(Object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+            Point flm = m.fallingMino;
+            g.DrawImage(bcgr, 0, 0, 1280, 720);
+            for (int j = 0; j < 24; j++)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    g.DrawImage(bg[i, j], 560 + i * 30, j * 30 - 30 * 3, 32, 32);
+                }
+            }
+
+            g.DrawImage(scoreSheet, 30, 30, 600, 300);
+            g.DrawImage(holdImg, 500, 200, 128, 128);    
+            
+            string scoreStr;
+            scoreStr = (gam.combo == 0) ? "\n" : "";
+            scoreStr += "SCORE:" + gam.score.ToString();
+            scoreStr += (gam.score == 0) ? "" : "0";
+            scoreStr += "\n\nLINE(S):" + gam.deletedRow.ToString() + "\n\nLEVEL:" + gam.level.ToString();
+            scoreStr += (gam.combo == 0) ? "" : "\n\nCOMBO:" + gam.combo.ToString();
+            scoreLabel.Text = scoreStr;
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    g.DrawImage(m.minoImageHold[j, i], 535 + j * 15, 245 + i * 15, 16, 16);
+                }
+            }
+
             switch (scene)
             {
-                case 3://gameloop
-                    Point flm = m.fallingMino;
-                    g.DrawImage(bcgr, 0, 0, 1280, 720);
-                    for (int j = 0; j < 24; j++)
-                    {
-                        for (int i = 0; i < 16; i++)
-                        {
-                            g.DrawImage(bg[i, j], 560 + i * 30, j * 30 - 30 * 3, 32, 32);
-                        }
-                    }
+                case 3:
                     for (int i = 0; i < 4; i++)
                     {
                         for (int j = 0; j < 4; j++)
@@ -88,103 +108,10 @@ namespace TetrisGame
                         for (int j = 0; j < 4; j++)
                         {
                             g.DrawImage(m.minoImage0[j, i], m.point.X + j * 30, m.point.Y + i * 30, 32, 32);
-                        }
-                    }
-                    if (!(gam.combo == 0))
-                    {
-                        if (gam.score != 0)
-                        {
-                            scoreLabel.Text = "SCORE:" + gam.score.ToString() + "0\n\nLINE(S):" + gam.deletedRow.ToString() +
-                        "\n\nLEVEL:" + gam.level.ToString() + "\n\nCOMBO:" + gam.combo.ToString();
-                        }
-                        else
-                        {
-                            scoreLabel.Text = "SCORE:" + gam.score.ToString() + "\n\nLINE(S):" + gam.deletedRow.ToString() +
-                        "\n\nLEVEL:" + gam.level.ToString() + "\n\nCOMBO:" + gam.combo.ToString();
-                        }
-                    }
-                    else
-                    {
-                        if (gam.score != 0)
-                        {
-                            scoreLabel.Text = "\nSCORE:" + gam.score.ToString() + "0\n\nLINE(S):" + gam.deletedRow.ToString() +
-                                "\n\nLEVEL:" + gam.level.ToString();
-                        }
-                        else
-                        {
-                            scoreLabel.Text = "\nSCORE:" + gam.score.ToString() + "\n\nLINE(S):" + gam.deletedRow.ToString() +
-                                "\n\nLEVEL:" + gam.level.ToString();
-                        }
-                    }
-                    g.DrawImage(scoreSheet, 30, 30, 600, 300);
-                    g.DrawImage(holdImg, 500, 200, 128, 128);
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            g.DrawImage(m.minoImageHold[j, i], 535 + j * 15, 245 + i * 15, 16, 16);
                         }
                     }
                     break;
                 case 5:
-                    flm = m.fallingMino;
-                    g.DrawImage(bcgr, 0, 0, 1280, 720);
-                    for (int j = 0; j < 24; j++)
-                    {
-                        for (int i = 0; i < 16; i++)
-                        {
-                            g.DrawImage(bg[i, j], 560 + i * 30, j * 30 - 30 * 3, 32, 32);
-                        }
-                    }
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            g.DrawImage(m.minoImage1[j, i], m.point.X + j * 30, (flm.Y + i + fallShadow() - 4) * 30, 32, 32);
-                        }
-                    }
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            g.DrawImage(m.minoImage0[j, i], m.point.X + j * 30, m.point.Y + i * 30, 32, 32);
-                        }
-                    }
-                    if (!(gam.combo == 0))
-                    {
-                        if (gam.score != 0)
-                        {
-                            scoreLabel.Text = "SCORE:" + gam.score.ToString() + "0\n\nLINE(S):" + gam.deletedRow.ToString() +
-                        "\n\nLEVEL:" + gam.level.ToString() + "\n\nCOMBO:" + gam.combo.ToString();
-                        }
-                        else
-                        {
-                            scoreLabel.Text = "SCORE:" + gam.score.ToString() + "\n\nLINE(S):" + gam.deletedRow.ToString() +
-                        "\n\nLEVEL:" + gam.level.ToString() + "\n\nCOMBO:" + gam.combo.ToString();
-                        }
-                    }
-                    else
-                    {
-                        if (gam.score != 0)
-                        {
-                            scoreLabel.Text = "\nSCORE:" + gam.score.ToString() + "0\n\nLINE(S):" + gam.deletedRow.ToString() +
-                                "\n\nLEVEL:" + gam.level.ToString();
-                        }
-                        else
-                        {
-                            scoreLabel.Text = "\nSCORE:" + gam.score.ToString() + "\n\nLINE(S):" + gam.deletedRow.ToString() +
-                                "\n\nLEVEL:" + gam.level.ToString();
-                        }
-                    }
-                    g.DrawImage(scoreSheet, 30, 30, 600, 300);
-                    g.DrawImage(holdImg, 500, 200, 128, 128);
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            g.DrawImage(m.minoImageHold[j, i], 535 + j * 15, 245 + i * 15, 16, 16);
-                        }
-                    }
                     int transp1 = retryMouseEnter ? 8 : 1;
                     int transp2 = exitMouseEnter ? 9 : 2;
                     for (int j = 0; j < 5; j++)
@@ -194,11 +121,10 @@ namespace TetrisGame
                     for (int j = 0; j < 4; j++)
                     {
                         g.DrawImage(img[transp2], j * 55 + 640, 480, 60, 60);
+
                     }
                     break;
-
             }
-
         }
         public void fm_KeyDown(Object sender, KeyEventArgs e)
         {
@@ -388,6 +314,7 @@ namespace TetrisGame
             scoreLabel.Parent = this;
             bgPaint();
             minoDeg();
+            tm.Start();
         }
         public void bgPaint()
         {
@@ -460,6 +387,8 @@ namespace TetrisGame
             }
             if (lookBottom() == true)
             {
+                gam.level = (gam.deletedRow < 140) ? gam.deletedRow / 10 : 14;
+                /*
                 if (gam.deletedRow < 10) gam.level = 0;
                 else if (gam.deletedRow < 20) gam.level = 1;
                 else if (gam.deletedRow < 30) gam.level = 2;
@@ -475,63 +404,24 @@ namespace TetrisGame
                 else if (gam.deletedRow < 130) gam.level = 12;
                 else if (gam.deletedRow < 140) gam.level = 13;
                 else gam.level = 14;
+                */
                 switch (gam.level)
                 {
-                    case 0:
-                        gam.fallTick = 20;
-                        break;
-                    case 1:
-                        gam.fallTick = 15;
-                        break;
-                    case 2:
-                        gam.fallTick = 10;
-                        break;
-                    case 3:
-                        gam.fallTick = 5;
-                        break;
-                    case 4:
-                        gam.fallTick = 0;
-                        break;
-                    case 5:
-                        gam.veryfast = true;
-                        gam.fallTick = 9;
-                        break;
-                    case 6:
-                        gam.veryfast = true;
-                        gam.fallTick = 8;
-                        break;
-                    case 7:
-                        gam.veryfast = true;
-                        gam.fallTick = 7;
-                        break;
-                    case 8:
-                        gam.veryfast = true;
-                        gam.fallTick = 6;
-                        break;
-                    case 9:
-                        gam.veryfast = true;
-                        gam.fallTick = 5;
-                        break;
-                    case 10:
-                        gam.veryfast = true;
-                        gam.fallTick = 4;
-                        break;
-                    case 11:
-                        gam.veryfast = true;
-                        gam.fallTick = 3;
-                        break;
-                    case 12:
-                        gam.veryfast = true;
-                        gam.fallTick = 2;
-                        break;
-                    case 13:
-                        gam.veryfast = true;
-                        gam.fallTick = 1;
-                        break;
-                    case 14:
-                        gam.veryfast = true;
-                        gam.fallTick = 0;
-                        break;
+                    case 0: gam.fallTick = 20; break;
+                    case 1: gam.fallTick = 15; break;
+                    case 2: gam.fallTick = 10; break;
+                    case 3: gam.fallTick = 5; break;
+                    case 4: gam.fallTick = 0; break;
+                    case 5: gam.veryfast = true; gam.fallTick = 9; break;
+                    case 6: gam.veryfast = true; gam.fallTick = 8; break;
+                    case 7: gam.veryfast = true; gam.fallTick = 7; break;
+                    case 8: gam.veryfast = true; gam.fallTick = 6; break;
+                    case 9: gam.veryfast = true; gam.fallTick = 5; break;
+                    case 10: gam.veryfast = true; gam.fallTick = 4; break;
+                    case 11: gam.veryfast = true; gam.fallTick = 3; break;
+                    case 12: gam.veryfast = true; gam.fallTick = 2; break;
+                    case 13: gam.veryfast = true; gam.fallTick = 1; break;
+                    case 14: gam.veryfast = true; gam.fallTick = 0; break;
                 }
                 fall(gam.fallTick);
             }
@@ -558,11 +448,7 @@ namespace TetrisGame
                     });
                     gam.holded = false;
                     bgPaint();
-                    gam.kind = rn.Next(7);
-                    m.fallingMino = new Point(6, 0);
-                    m.point = new Point(740, -90);
-                    m.deg = 0;
-                    minoDeg();
+                    
                     rct = deleteRow();
                     rc = rct;
                     while (!(rct == 0))
@@ -572,13 +458,21 @@ namespace TetrisGame
                     }
                     scoreCal(rc, gam.combo);
                     if (!(rc == 0)) gam.combo += 1; else gam.combo = 0;
+                    if (gameOver()) scene = 4;
+                    gam.kind = rn.Next(7);
+                    m.fallingMino = new Point(6, 0);
+                    m.point = new Point(740, -90);
+                    m.deg = 0;
+                    minoDeg();
                 }
                 else
                 {
                     timerCount++;
                 }
+
+
             }
-            if (gameOver()) scene = 4;
+
             bgPaint();
         }
         public void tm_Tick(Object sender, EventArgs e)
@@ -595,6 +489,7 @@ namespace TetrisGame
                     break;
                 case 3:
                     gameLoop();
+                    Invalidate();
                     break;
                 case 4:
                     gameOverInit();
@@ -602,9 +497,10 @@ namespace TetrisGame
                     break;
                 case 5:
                     gameOverLoop();
+                    Invalidate();
                     break;
             }
-            Invalidate();
+            
         }
         public void gameOverInit()
         {
@@ -636,7 +532,7 @@ namespace TetrisGame
         {
             for (int i = 3; i < 13; i++)
             {
-                if (!(gam.placedMino[5, i] == -1)) return true;
+                if (!((gam.placedMino[4, i] == -1)||(gam.placedMino[4, i] == -3))) return true;
             }
             return false;
         }
@@ -915,7 +811,10 @@ namespace TetrisGame
             {
                 for (int i = 0; i < 16; i++)
                 {
-                    gam.placedMino[4, i] = ((i >= 3) & (i <= 12)) ? -1 : -2;
+                    if (gam.placedMino[4, i] == -1 || gam.placedMino[4, i] == -3)
+                    {
+                        gam.placedMino[4, i] = ((i >= 3) & (i <= 12)) ? -1 : -2;
+                    }
                 }
             }
             else
