@@ -130,7 +130,7 @@ namespace TetrisGame
         {
             if(scene == 3)
             {
-                if ((e.KeyCode == Keys.Right) & (rightOk()))
+                if ((e.KeyCode == Keys.Right) && (rightOk()))
                 {
                     Point flm = m.fallingMino;
                     flm.X += 1;
@@ -139,7 +139,7 @@ namespace TetrisGame
                     point.X += 30;
                     m.point = point;
                 }
-                else if ((e.KeyCode == Keys.Left) & (leftOk()))
+                else if ((e.KeyCode == Keys.Left) && (leftOk()))
                 {
                     Point flm = m.fallingMino;
                     flm.X -= 1;
@@ -165,7 +165,7 @@ namespace TetrisGame
                         gam.veryfast = false;
                     }
                 }
-                else if ((e.KeyCode == Keys.Z) & (rotaterightOk()))
+                else if ((e.KeyCode == Keys.Z) && (rotaterightOk()))
                 {
                     if (m.deg == 3)
                     {
@@ -177,7 +177,7 @@ namespace TetrisGame
                     }
                     minoDeg();
                 }
-                else if ((e.KeyCode == Keys.X) & (rotateleftOk()))
+                else if ((e.KeyCode == Keys.X) && (rotateleftOk()))
                 {
                     if (m.deg == 0)
                     {
@@ -388,23 +388,7 @@ namespace TetrisGame
             if (lookBottom() == true)
             {
                 gam.level = (gam.deletedRow < 140) ? gam.deletedRow / 10 : 14;
-                /*
-                if (gam.deletedRow < 10) gam.level = 0;
-                else if (gam.deletedRow < 20) gam.level = 1;
-                else if (gam.deletedRow < 30) gam.level = 2;
-                else if (gam.deletedRow < 40) gam.level = 3;
-                else if (gam.deletedRow < 50) gam.level = 4;
-                else if (gam.deletedRow < 60) gam.level = 5;
-                else if (gam.deletedRow < 70) gam.level = 6;
-                else if (gam.deletedRow < 80) gam.level = 7;
-                else if (gam.deletedRow < 90) gam.level = 8;
-                else if (gam.deletedRow < 100) gam.level = 9;
-                else if (gam.deletedRow < 110) gam.level = 10;
-                else if (gam.deletedRow < 120) gam.level = 11;
-                else if (gam.deletedRow < 130) gam.level = 12;
-                else if (gam.deletedRow < 140) gam.level = 13;
-                else gam.level = 14;
-                */
+
                 switch (gam.level)
                 {
                     case 0: gam.fallTick = 20; break;
@@ -605,15 +589,22 @@ namespace TetrisGame
         {
             Point flm = m.fallingMino;
             bool rotateok = true;
-            int d = m.deg;
-            d = d == 3 ? 0 : d++;
+            int d = (int)m.deg;
+            if (d == 3)
+            {
+                d = 0;
+            }
+            else
+            {
+                d++;
+            }
             for (int j = 0; j < 4; j++)
             {
                 for (int i = 0; i < 4; i++)
                 {
                     if (m.minoShape[gam.kind, d, j, i] == 1)
                     {
-                        if (!(gam.placedMino[flm.Y + j + 1, flm.X + i] == -1 || gam.placedMino[flm.Y + j + 1, flm.X + i] == -3))
+                        if (!(gam.placedMino[flm.Y + j, flm.X + i] == -1 || gam.placedMino[flm.Y + j, flm.X + i] == -3))
                         {
                             rotateok = false;
                         }
@@ -627,15 +618,22 @@ namespace TetrisGame
         {
             Point flm = m.fallingMino;
             bool rotateok = true;
-            int d = m.deg;
-            d = d == 0 ? 3 : d--;
+            int d = (int)m.deg;
+            if (d == 0)
+            {
+                d = 3;
+            }
+            else
+            {
+                d--;
+            }
             for (int j = 0; j < 4; j++)
             {
                 for (int i = 0; i < 4; i++)
                 {
                     if (m.minoShape[gam.kind, d, j, i] == 1)
                     {
-                        if (!(gam.placedMino[flm.Y + j + 1, flm.X + i] == -1 || gam.placedMino[flm.Y + j + 1, flm.X + i] == -3))
+                        if (!(gam.placedMino[flm.Y + j, flm.X + i] == -1 || gam.placedMino[flm.Y + j, flm.X + i] == -3))
                         {
                             rotateok = false;
                         }
